@@ -9,7 +9,7 @@ var has = Object.prototype.hasOwnProperty;
  * @returns {String} The decoded string.
  * @api private
  */
-function decode(input) {
+function __decode(input) {
   return decodeURIComponent(input.replace(/\+/g, ' '));
 }
 
@@ -20,7 +20,7 @@ function decode(input) {
  * @returns {Object}
  * @api public
  */
-function querystring(query) {
+window.qs_parse = function(query) {
   var parser = /([^=?&]+)=?([^&]*)/g
     , result = {}
     , part;
@@ -32,7 +32,7 @@ function querystring(query) {
   //
   for (;
     part = parser.exec(query);
-    result[decode(part[1])] = decode(part[2])
+    result[__decode(part[1])] = __decode(part[2])
   );
 
   return result;
@@ -46,7 +46,7 @@ function querystring(query) {
  * @returns {String}
  * @api public
  */
-function querystringify(obj, prefix) {
+window.qs_stringify = function(obj, prefix) {
   prefix = prefix || '';
 
   var pairs = [];
@@ -64,9 +64,3 @@ function querystringify(obj, prefix) {
 
   return pairs.length ? prefix + pairs.join('&') : '';
 }
-
-//
-// Expose the module.
-//
-exports.stringify = querystringify;
-exports.parse = querystring;
